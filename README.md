@@ -21,7 +21,13 @@ CUDA_VISIBLE_DEVICES=<gpu_id> python train.py
 This code will upload all pairs of landmark and stylized images and contuct training.
 
 
+To test our model and evalute the perfomace we use command 
 
+```
+python test_baseline.py --key=test --decoder=<decoder_path>
+```
+
+This code will calculate loss for decoder for all test dataset and save style and content loss in the output folder.
 
 ## Requirements
 Please install requirements by `pip install -r requirements.txt`
