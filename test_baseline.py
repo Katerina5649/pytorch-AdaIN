@@ -217,10 +217,11 @@ for content_path, style_path in tqdm(zip(content_paths, style_paths)):
         except Exception as e: 
             print(f"{e} for {content_path}, {style_path}") 
 df = pd.DataFrame({'content_loss': content_loss, 'style_loss': style_loss})
-if args.key == "trained":
-    df.to_csv('./output/test_trained_loss.csv', index=False)
-    print('Test trained finished')
-else:
+if args.decoder=='models/decoder.pth':
     df.to_csv('./output/test_baseline_loss.csv', index=False)
     print('Test baseline finished')
+else:
+    df.to_csv('./output/test_trained_loss.csv', index=False)
+    print('Test trained finished')
+    
 
