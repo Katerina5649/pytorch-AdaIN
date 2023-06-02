@@ -1,33 +1,36 @@
 ![Model architecture](model.jpg)
 
-This repository was used to conduct experimemts for EPFL CS-503 project.
+This repository was used to display experimemts for EPFL CS-503 project in attempt to obtain a realistic style transfer model.
 
-Before running the code it is necessary to download our data from google drive [google drive]
-(https://drive.google.com/drive/folders/1SLUqLdlu__opZD7NwYJXnkOHYAAgqYVR?usp=sharing).
-Also, you can download model's weight [decoder.pth](https://drive.google.com/file/d/1bMfhMMwPeXnYSQI6cDWElSZxOxc6aVyr/view?usp=sharing)/[vgg_normalized.pth](https://drive.google.com/file/d/1EpkBA2K2eYILDSyPTt0fztz59UjAIpZU/view?usp=sharing) and put them under `models/`.
+Before running the code it is necessary to download model weights from [decoder.pth](https://drive.google.com/file/d/1bMfhMMwPeXnYSQI6cDWElSZxOxc6aVyr/view?usp=sharing)/[vgg_normalized.pth](https://drive.google.com/file/d/1EpkBA2K2eYILDSyPTt0fztz59UjAIpZU/view?usp=sharing) and put them under `models/`.
 
-It is important to move all files from ```input``` folder from google drive to local folder.
+The data created for this project can be recreated using the commands below or can be found in google drive [google drive]
+(https://drive.google.com/drive/folders/1SLUqLdlu__opZD7NwYJXnkOHYAAgqYVR?usp=sharing). Please use the following folders with the same names:
+  input/EPFL_stylized
+  input/EPFL_landmark
+  input/EPFL_styles
 
-To apply realitic style transfer firstle we had to create our dataset by applying styles to different landmarks.
+In the first step of our project we had to create our stylized dataset by applying styles to different landmark images.
 
-For creating test, train and validation datasets we used the command below with different keys ```train, val, test ```
+For creating stylized landmark images for test, train and validation sets we used the command below with different keys ```train, val, test ```
 ```
 CUDA_VISIBLE_DEVICES=<gpu_id> python test.py--key train
 ```
-This code will create stylized image and save it to the ```input/EPFL_stylized``` folder. We also provide the results of this command in ```input/EPFL_stylized``` on the Google drive.
+This code will create stylized landmark images and save into ```input/EPFL_stylized``` folder. We also provide the results of this command in ```input/EPFL_stylized``` on the Google drive.
+
+In the second part of our project we used the stylized images and real landmark images to retrain the model and used the following command:
 ```
 CUDA_VISIBLE_DEVICES=<gpu_id> python train.py 
 ```
-This code will upload all pairs of landmark and stylized images and contuct training.
+The code below will gather all pairs of stylized images and  landmark images and retrain the model. Weights of the retrained model can be found in ```experiments/decoder_iter_81000.pth.tar```
 
-
-To test our model and evalute the perfomace we use command 
+To obtain baseline model performance and retrained model performance on the test set we use the following command:
 
 ```
 python test_baseline.py --key=test --decoder=<decoder_path>
 ```
 
-This code will calculate loss for decoder for all test dataset and save style and content loss in the output folder.
+This code will calculate content loss and style loss on test dataset and save in the output folder. To compute the baseline model losses use the option ```--decoder='models/decoder.pth'```. To compute the losses for our retrained model use the option ```--decoder='experiments/decoder_iter_81000.pth.tar'```
 
 ## Requirements
 Please install requirements by `pip install -r requirements.txt`
