@@ -53,14 +53,14 @@ valid_pairs.drop('id', axis=1, inplace=True)
 test_pairs = pd.merge(test_pairs, test_cats, how='inner', right_on='id', left_on='img_id')
 test_pairs.drop('id', axis=1, inplace=True)
 
-def get_other_imgs(img_id, landmark_id, num=5):
+def get_other_imgs(img_id, landmark_id, num=5, cats):
   all_imgs = [x for x in cats[cats['landmark_id']==landmark_id]['id'] if x != img_id]
   random_imgs = random.sample(all_imgs, k=num)
   return random_imgs
   
-train_pairs['paired_imgs'] = train_pairs.apply(lambda x : get_other_imgs(x['img_id'], x['landmark_id'], 5), axis=1)
-valid_pairs['paired_imgs'] = valid_pairs.apply(lambda x : get_other_imgs(x['img_id'], x['landmark_id'], 2), axis=1)
-test_pairs['paired_imgs'] = test_pairs.apply(lambda x : get_other_imgs(x['img_id'], x['landmark_id'], 2), axis=1)
+train_pairs['paired_imgs'] = train_pairs.apply(lambda x : get_other_imgs(x['img_id'], x['landmark_id'], 5, train_cats), axis=1)
+valid_pairs['paired_imgs'] = valid_pairs.apply(lambda x : get_other_imgs(x['img_id'], x['landmark_id'], 2, valid_cats), axis=1)
+test_pairs['paired_imgs'] = test_pairs.apply(lambda x : get_other_imgs(x['img_id'], x['landmark_id'], 2, test_cats), axis=1)
 
 train_pairs = train_pairs.explode('paired_imgs').reset_index(drop=True).rename(columns={'paired_imgs':'paired_img'})
 valid_pairs = valid_pairs.explode('paired_imgs').reset_index(drop=True).rename(columns={'paired_imgs':'paired_img'})
