@@ -8,6 +8,8 @@ For creating test, train and validation datasets we used the command below with 
 ```
 CUDA_VISIBLE_DEVICES=<gpu_id> python test.py--key train
 ```
+This code will create stylized image and save it to the ```input/EPFL_stylized``` folder. We also provide the results of this command in ```input/EPFL_stylized``` on the Google drive.
+
 
 # pytorch-AdaIN
 
