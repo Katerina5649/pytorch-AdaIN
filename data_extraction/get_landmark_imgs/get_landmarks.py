@@ -18,7 +18,7 @@ valid_test_per_cat = 5 # number of images per landmark category in validation an
 tar_file_nums = 500 # number of tar files to download
 temp_path = './temp/' # temporary path to extract tar file
 train_save_path = '../../input/EPFL_landmark/train/'
-valid_save_path = '../../input/EPFL_landmark/valid/'
+valid_save_path = '../../input/EPFL_landmark/val/'
 test_save_path = '../../input/EPFL_landmark/test/'
 
 
