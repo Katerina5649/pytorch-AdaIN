@@ -135,7 +135,12 @@ vgg = net.vgg
 decoder.eval()
 vgg.eval()
 
-decoder.load_state_dict(torch.load(args.decoder))
+if args.key == "trained":
+    model_path = 'models/decoder_iter_81000.pth.tar'
+else:
+    model_path = 'models/decoder.pth'
+
+decoder.load_state_dict(torch.load(model_path))
 vgg.load_state_dict(torch.load(args.vgg))
 vgg = nn.Sequential(*list(vgg.children())[:31])
 
