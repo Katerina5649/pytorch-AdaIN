@@ -9,12 +9,11 @@ For creating test, train and validation datasets we used the command below with 
 CUDA_VISIBLE_DEVICES=<gpu_id> python test.py--key train
 ```
 This code will create stylized image and save it to the ```input/EPFL_stylized``` folder. We also provide the results of this command in ```input/EPFL_stylized``` on the Google drive.
+```
+CUDA_VISIBLE_DEVICES=<gpu_id> python train.py 
+```
+This code will upload all pairs of landmark and stylized images and contuct training.
 
-
-# pytorch-AdaIN
-
-This is an unofficial pytorch implementation of a paper, Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization [Huang+, ICCV2017].
-I'm really grateful to the [original implementation](https://github.com/xunhuang1995/AdaIN-style) in Torch by the authors, which is very useful.
 
 ![Results](results.png)
 
