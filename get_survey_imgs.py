@@ -136,7 +136,7 @@ decoder.eval()
 vgg.eval()
 
 if args.key == "trained":
-    model_path = 'models/decoder_iter_81000.pth.tar'
+    model_path = 'experiments/decoder_iter_81000.pth.tar'
 else:
     model_path = 'models/decoder.pth'
 
