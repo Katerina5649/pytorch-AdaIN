@@ -1,14 +1,17 @@
 import argparse
 from pathlib import Path
+import pandas as pd
 
 import torch
 import torch.nn as nn
+import torch.utils.data as data
 from PIL import Image
 from torchvision import transforms
 from torchvision.utils import save_image
 from tqdm import tqdm
 import net
 from function import adaptive_instance_normalization, coral
+from sampler import InfiniteSamplerWrapper
 
 
 def test_transform(size, crop):
@@ -86,10 +89,16 @@ args = parser.parse_args()
 import pandas
 import os
 
-path = 'input'
+##path = 'input'
+stylized_path = "input/EPFL_stylized/test"  
+landmark_path = "input/EPFL_landmark/test"  
 if args.key:
-  csv_path = f"input/EPFL_styles/landmark_style_pairs_{args.key}.csv"
+  csv_path = "input/test_pairs.csv"
   df = pandas.read_csv(csv_path)
+  #csv_path = f"input/EPFL_styles/landmark_style_pairs_{args.key}.csv"
+  #df_full = pandas.read_csv(csv_path)
+  #df = df_full.iloc[10000:20000]
+  #print('10-20 length:', len(df))
 
 #img_path = [ os.path.join(path, img) for img in df['style_img_path'].to_list()]
 #landmark_img_path = [ os.path.join(path, img) for img in df['landmark_img_path'].to_list()]
@@ -99,8 +108,8 @@ do_interpolation = False
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-output_dir = Path(args.output)
-output_dir.mkdir(exist_ok=True, parents=True)
+#output_dir = Path(args.output)
+#output_dir.mkdir(exist_ok=True, parents=True)
 
 # Either --content or --contentDir should be given.
 assert (args.content or args.content_dir or args.key)
@@ -110,8 +119,8 @@ elif args.content_dir:
     content_dir = Path(args.content_dir)
     content_paths = [f for f in content_dir.glob('*')]
 else:
-    output_dir = Path(f'input/EPFL_stylized/{args.key}')
-    content_paths = [ Path(os.path.join(path, 'EPFL_landmark', args.key, img)) for img in df['landmark_img_path'].to_list()]
+    output_dir = Path("output/trained/")
+    content_paths = [ Path(os.path.join(stylized_path, img)) for img in df['stylized_name'].to_list()]
 
 # Either --style or --styleDir should be given.
 assert (args.style or args.style_dir or args.key)
@@ -129,7 +138,7 @@ elif args.style_dir:
     style_dir = Path(args.style_dir)
     style_paths = [f for f in style_dir.glob('*')]
 else:
-    style_paths = [ Path(os.path.join(path, 'EPFL_styles', args.key, img)) for img in df['style_img_path'].to_list()]
+    style_paths = [ Path(os.path.join(landmark_path, img)) for img in df['paired_img'].to_list()]
 
 decoder = net.decoder
 vgg = net.vgg
@@ -141,14 +150,20 @@ decoder.load_state_dict(torch.load(args.decoder))
 vgg.load_state_dict(torch.load(args.vgg))
 vgg = nn.Sequential(*list(vgg.children())[:31])
 
+network = net.Net(vgg, decoder)
+network.eval()
+network.to(device)
+
 vgg.to(device)
 decoder.to(device)
 
-content_tf = test_transform(args.content_size, args.crop)
-style_tf = test_transform(args.style_size, args.crop)
+content_tf = test_transform(args.content_size, True)
+style_tf = test_transform(args.style_size, True)
 
 
 print('All model downloaded')
+content_loss=[]
+style_loss=[]
 for content_path, style_path in tqdm(zip(content_paths, style_paths)):
     #print(content_path, style_path)
     if do_interpolation:  # one content image, N style image
@@ -168,24 +183,40 @@ for content_path, style_path in tqdm(zip(content_paths, style_paths)):
     else:  # process one content and one style
         try:
             #print(os.listdir(output_dir))
-            output_name = output_dir / '{:s}_stylized_{:s}{:s}'.format(
-                content_path.stem, style_path.stem, args.save_ext)
-        
+            #output_name = output_dir / '{:s}_with_{:s}{:s}'.format(
+             #   content_path.stem, style_path.stem, args.save_ext)
         
             content = content_tf(Image.open(str(content_path)))
             style = style_tf(Image.open(str(style_path)))
+
             if args.preserve_color:
                 style = coral(style, content)
+            
+            content_iter = iter(data.DataLoader(content.unsqueeze(0), batch_size=1,
+                                #sampler=InfiniteSamplerWrapper(content.unsqueeze(0)),
+                                num_workers=1))
+            style_iter = iter(data.DataLoader(style.unsqueeze(0), batch_size=1,
+                                #sampler=InfiniteSamplerWrapper(style.unsqueeze(0)),
+                                num_workers=1))
+            
             style = style.to(device).unsqueeze(0)
             content = content.to(device).unsqueeze(0)
+            
             with torch.no_grad():
-                  output = style_transfer(vgg, decoder, content, style,
-                                        args.alpha)
-            output = output.cpu()
+                  #output = style_transfer(vgg, decoder, content, style, args.alpha)
+                  content_images = next(content_iter).to(device)
+                  style_images = next(style_iter).to(device)
+                  loss_c, loss_s = network(content_images, style_images)
+                  content_loss.append(loss_c.detach().cpu().numpy())
+                  style_loss.append(loss_s.detach().cpu().numpy())
+            #output = output.cpu()
 
             #print(f'output {output.shape} saved {str(output_name)}')   
-            save_image(output, str(output_name))
+            #save_image(output, str(output_name))
+            df = pd.DataFrame({'content_loss': content_loss, 'style_loss': style_loss})
+            df.to_csv('output/baseline_loss_overfit.csv', index=False)
         except Exception as e: 
             print(f"{e} for {content_path}, {style_path}") 
-
-print('Test function finished')
+df = pd.DataFrame({'content_loss': content_loss, 'style_loss': style_loss})
+df.to_csv('output/baseline_loss_overfit.csv', index=False)
+print('Test baseline finished')
