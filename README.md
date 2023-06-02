@@ -1,3 +1,12 @@
+This repository was used to conduct experimemts for EPFL CS-503 project.
+
+To apply realitic style transfer firstle we had to create our dataset by applying styles to different landmarks.
+
+For creating test, train and validation datasets we used the command below with different keys ```train, val, test ```
+```
+CUDA_VISIBLE_DEVICES=<gpu_id> python test.py--key train
+```
+
 # pytorch-AdaIN
 
 This is an unofficial pytorch implementation of a paper, Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization [Huang+, ICCV2017].
