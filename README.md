@@ -1,5 +1,7 @@
 This repository was used to conduct experimemts for EPFL CS-503 project.
 
+Before running the code it is necessary to download our data from google drive [google drive](https://drive.google.com/drive/folders/1SLUqLdlu__opZD7NwYJXnkOHYAAgqYVR?usp=sharing)
+
 To apply realitic style transfer firstle we had to create our dataset by applying styles to different landmarks.
 
 For creating test, train and validation datasets we used the command below with different keys ```train, val, test ```
