@@ -119,7 +119,7 @@ elif args.content_dir:
     content_dir = Path(args.content_dir)
     content_paths = [f for f in content_dir.glob('*')]
 else:
-    output_dir = Path("output/trained/")
+    output_dir = Path("output/baseline/")
     content_paths = [ Path(os.path.join(stylized_path, img)) for img in df['stylized_name'].to_list()]
 
 # Either --style or --styleDir should be given.
@@ -183,7 +183,7 @@ for content_path, style_path in tqdm(zip(content_paths, style_paths)):
     else:  # process one content and one style
         try:
             #print(os.listdir(output_dir))
-            #output_name = output_dir / '{:s}_with_{:s}{:s}'.format(
+            #output_name = output_dir / 'test_baseline_{:s}_with_{:s}{:s}'.format(
              #   content_path.stem, style_path.stem, args.save_ext)
         
             content = content_tf(Image.open(str(content_path)))
@@ -218,5 +218,5 @@ for content_path, style_path in tqdm(zip(content_paths, style_paths)):
         except Exception as e: 
             print(f"{e} for {content_path}, {style_path}") 
 df = pd.DataFrame({'content_loss': content_loss, 'style_loss': style_loss})
-df.to_csv('output/baseline_loss.csv', index=False)
+df.to_csv('./output/baseline/test_baseline_loss.csv', index=False)
 print('Test baseline finished')
