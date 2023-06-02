@@ -15,7 +15,7 @@ CUDA_VISIBLE_DEVICES=<gpu_id> python train.py
 This code will upload all pairs of landmark and stylized images and contuct training.
 
 
-![Results](results.png)
+![Model architecture](model.jpg)
 
 ## Requirements
 Please install requirements by `pip install -r requirements.txt`
