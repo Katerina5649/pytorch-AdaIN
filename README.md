@@ -6,9 +6,9 @@ Before running the code it is necessary to download model weights from [decoder.
 
 The data created for this project can be recreated using the commands below or can be found in google drive [google drive]
 (https://drive.google.com/drive/folders/1SLUqLdlu__opZD7NwYJXnkOHYAAgqYVR?usp=sharing). Please use the following folders with the same names:
-  input/EPFL_stylized
-  input/EPFL_landmark
-  input/EPFL_styles
+- ```input/EPFL_stylized```
+- ```input/EPFL_landmark```
+- ```input/EPFL_styles```
 
 In the first step of our project we had to create our stylized dataset by applying styles to different landmark images.
 
