@@ -213,8 +213,7 @@ for content_path, style_path in tqdm(zip(content_paths, style_paths)):
 
             #print(f'output {output.shape} saved {str(output_name)}')   
             #save_image(output, str(output_name))
-            df = pd.DataFrame({'content_loss': content_loss, 'style_loss': style_loss})
-            df.to_csv('output/baseline_loss_overfit.csv', index=False)
+            
         except Exception as e: 
             print(f"{e} for {content_path}, {style_path}") 
 df = pd.DataFrame({'content_loss': content_loss, 'style_loss': style_loss})
