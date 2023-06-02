@@ -47,8 +47,6 @@ Please install requirements by `pip install -r requirements.txt`
 
 For more details and parameters, please refer to --help option.
 
-I share the model trained by this code [here](https://drive.google.com/file/d/1YIBRdgGBoVllLhmz_N7PwfeP5V9Vz2Nr/view?usp=sharing)
-
 ## References
 - [1]: X. Huang and S. Belongie. "Arbitrary Style Transfer in Real-time with Adaptive Instance Normalization.", in ICCV, 2017.
 - [2]: [Original implementation in Torch](https://github.com/xunhuang1995/AdaIN-style)
