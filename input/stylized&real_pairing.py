@@ -8,7 +8,7 @@ import random
 
 train_path = './EPFL_stylized/train/'
 valid_path = './EPFL_stylized/val/'
-test_path = './EPFL_landmark/train/'
+test_path = './EPFL_stylized/test/'
 
 train_names =[]
 for dir_paths, dirs, files in os.walk(train_path):
