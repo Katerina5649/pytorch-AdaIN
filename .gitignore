@@ -4,3 +4,6 @@ output/*
 .idea
 experiments/*
 logs/*
+
+*.jpg
+*.zip
