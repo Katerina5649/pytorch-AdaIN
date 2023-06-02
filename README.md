@@ -1,8 +1,8 @@
 ![Model architecture](model.jpg)
 
-This repository was used to display experimemts for EPFL CS-503 project in attempt to obtain a realistic style transfer model.
+This repository was used to display experiments for EPFL CS-503 project in attempt to obtain a realistic style transfer model.
 
-Before running the code it is necessary to download model weights from [decoder.pth](https://drive.google.com/file/d/1bMfhMMwPeXnYSQI6cDWElSZxOxc6aVyr/view?usp=sharing)/[vgg_normalized.pth](https://drive.google.com/file/d/1EpkBA2K2eYILDSyPTt0fztz59UjAIpZU/view?usp=sharing) and put them under `models/`.
+Before running the code it is necessary to download initial model weights from [decoder.pth](https://drive.google.com/file/d/1bMfhMMwPeXnYSQI6cDWElSZxOxc6aVyr/view?usp=sharing)/[vgg_normalized.pth](https://drive.google.com/file/d/1EpkBA2K2eYILDSyPTt0fztz59UjAIpZU/view?usp=sharing) and put them under `models/`.
 
 The data created for this project can be recreated using the commands below or can be found in google drive [google drive]
 (https://drive.google.com/drive/folders/1SLUqLdlu__opZD7NwYJXnkOHYAAgqYVR?usp=sharing). Please use the following folders with the same names:
