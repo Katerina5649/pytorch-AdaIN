@@ -13,9 +13,9 @@ os.chdir('Style_imgs')
 
 # I/O 
 STYLE_FOLDER = './imgs/' # style images folder
-LANDMARK_FOLDER = '../Landmark_imgs/' # landmark images folder
+LANDMARK_FOLDER = '../../input/EPFL_landmark/' # landmark images folder
 STYLES_METADATA_FILE = STYLE_FOLDER + 'all_data_info.csv' # metadata file for style images
-OUTPUT_FOLDER = '../../input/style/' # output folder for the pairs
+OUTPUT_FOLDER = '../../input/EPFL_styles/' # output folder for the pairs
 
 # Pairing generation parameters
 n_baseline_imgs = {'all': 10, 'val': 5, 'test': 5} # number of stylized images paired with each landmark image in the split
